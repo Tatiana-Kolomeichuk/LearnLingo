@@ -66,56 +66,11 @@
 }
 
 .loginBtn {
-  display: flex;
-  align-items: center;
   gap: 8px;
-
-  padding: 0;
-
-  border: none;
-  background-color: transparent;
-
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
-
-  color: #121417;
-  cursor: pointer;
-
-  transition: color 250ms ease;
-}
-
-.loginBtn:hover,
-.loginBtn:focus {
-  color: #f4c550;
 }
 
 .loginIcon {
   color: #f4c550;
   font-size: 18px;
   line-height: 1;
-}
-
-.registerBtn {
-  min-width: 166px;
-  height: 48px;
-  padding: 14px 39px;
-
-  border: none;
-  border-radius: 12px;
-  background-color: #121417;
-
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.25;
-
-  color: #ffffff;
-  cursor: pointer;
-
-  transition: background-color 250ms ease;
-}
-
-.registerBtn:hover,
-.registerBtn:focus {
-  background-color: #2f3135;
 }

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import css from "./Header.module.css";
+import Button from "../Button/Button";
 
 interface HeaderProps {
   onLoginClick: () => void;
@@ -24,19 +25,15 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
         </NavLink>
       </nav>
 
-      <div className={css.auth}>
-        <button type="button" className={css.loginBtn} onClick={onLoginClick}>
+     <div className={css.auth}>
+        <Button variant="text" onClick={onLoginClick} className={css.loginBtn}>
           <span className={css.loginIcon}>↪</span>
           Log in
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          className={css.registerBtn}
-          onClick={onRegisterClick}
-        >
+        <Button variant="dark" onClick={onRegisterClick}>
           Registration
-        </button>
+        </Button>
       </div>
     </header>
   );

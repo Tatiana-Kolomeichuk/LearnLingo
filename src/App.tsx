@@ -5,13 +5,18 @@ import TeachersPage from "./pages/TeachersPage/TeachersPage";
 import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useState } from "react";
+import AuthModal from "./components/AuthModal/AuthModal";
+
+type AuthMode = "login" | "register" | null;
 
 export default function App() {
   const [authMode, setAuthMode] = useState<AuthMode>(null);
-  console.log(authMode);
 
-  console.log(authMode);
-  return (
+  const closeAuthModal = () => {
+    setAuthMode(null);
+  };
+
+    return (
     <>
       <Header
         onLoginClick={() => setAuthMode("login")}
@@ -22,7 +27,8 @@ export default function App() {
         <Route path="/teachers" element={<TeachersPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+        </Routes>
+        {authMode && <AuthModal mode={authMode} onClose={closeAuthModal} />}
     </>
   );
 }

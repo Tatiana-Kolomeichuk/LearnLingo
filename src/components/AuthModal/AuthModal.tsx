@@ -10,6 +10,7 @@ import {
   type RegisterFormValues,
 } from "../../schemas/authSchemas";
 import css from "./AuthModal.module.css";
+import { loginUser, registerUser } from "../../services/authService";
 
 type AuthMode = "login" | "register";
 
@@ -29,15 +30,35 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AuthFormValues>({
     resolver: yupResolver(schema),
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: AuthFormValues) => {
-    console.log(data);
-    onClose();
+  const onSubmit = async (data: AuthFormValues) => {
+    try {
+      if (isLogin) {
+        await loginUser({
+          email: data.email,
+          password: data.password,
+        });
+      } else {
+        if (!("name" in data) || !data.name) {
+          return;
+        }
+
+        await registerUser({
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
+      }
+
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -108,8 +129,13 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
           )}
         </label>
 
-        <Button type="submit" variant="primary" className={css.submitBtn}>
-          {isLogin ? "Log In" : "Sign Up"}
+        <Button
+          type="submit"
+          variant="primary"
+          className={css.submitBtn}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Loading..." : isLogin ? "Log In" : "Sign Up"}
         </Button>
       </form>
     </Modal>

@@ -1,0 +1,24 @@
+.page {
+  min-height: calc(100vh - 88px);
+  padding: 32px 64px;
+
+  background-color: #f8f8f8;
+}
+
+.list {
+  max-width: 1184px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  margin: 0 auto 64px;
+  padding: 0;
+
+  list-style: none;
+}
+
+.loadMoreBtn {
+  display: flex;
+  margin: 0 auto;
+}

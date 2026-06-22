@@ -18,7 +18,7 @@ export async function getTeachers(
   limit = 4,
   lastKey: string | null = null
 ): Promise<GetTeachersResult> {
-  const teachersRef = ref(database, "teachers");
+  const teachersRef = ref(database, "/");
 
   const teachersQuery = lastKey
     ? query(teachersRef, orderByKey(), startAfter(lastKey), limitToFirst(limit))

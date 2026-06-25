@@ -48,7 +48,9 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
               onClick={onLoginClick}
               className={css.loginBtn}
             >
-              <span className={css.loginIcon}>↪</span>
+              <svg width="20" height="20" className={css.loginIcon}>
+                <use href={`/public/symbol-defs.svg#icon-log-in`} />
+              </svg>
               Log in
             </Button>
 

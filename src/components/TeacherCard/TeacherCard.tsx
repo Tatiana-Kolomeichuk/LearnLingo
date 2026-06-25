@@ -17,7 +17,9 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
           src={teacher.avatar_url}
           alt={`${teacher.name} ${teacher.surname}`}
         />
-        <span className={css.onlineDot}></span>
+        <svg width="12" height="12" className={css.onlineDot}>
+                        <use href={`/public/symbol-defs.svg#icon-online`} />
+                      </svg>
       </div>
 
       <div className={css.content}>
@@ -25,9 +27,17 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
           <p className={css.label}>Languages</p>
 
           <div className={css.stats}>
-            <span>Lessons online</span>
+            <span><svg width="16" height="16" className={css.reviewRating}>
+                <use href={`/public/symbol-defs.svg#icon-book-open`} />
+              </svg>Lessons online</span>
             <span>Lessons done: {teacher.lessons_done}</span>
-            <span>★ Rating: {teacher.rating}</span>
+            <span>
+              {" "}
+              <svg width="16" height="16" className={css.reviewRating}>
+                <use href={`/public/symbol-defs.svg#icon-star`} />
+              </svg>{" "}
+              Rating: {teacher.rating}
+            </span>
             <span>
               Price / 1 hour:{" "}
               <strong className={css.price}>{teacher.price_per_hour}$</strong>
@@ -39,7 +49,9 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
             className={css.heartBtn}
             aria-label="Add to favorites"
           >
-            ♡
+         <svg width="26" height="26" className={css.reviewRating}>
+                        <use href={`/public/symbol-defs.svg#icon-heart`} />
+                      </svg>
           </button>
         </div>
 
@@ -88,9 +100,10 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
 
                     <div>
                       <p className={css.reviewName}>{review.reviewer_name}</p>
-                      <p className={css.reviewRating}>
-                        ★ {review.reviewer_rating}
-                      </p>
+                      <svg width="16" height="16" className={css.reviewRating}>
+                        <use href={`/public/symbol-defs.svg#icon-star`} />
+                      </svg>
+                      {review.reviewer_rating}
                     </div>
                   </div>
 

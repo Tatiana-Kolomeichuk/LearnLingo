@@ -2,6 +2,9 @@ import { useState } from "react";
 import type { Teacher } from "../../types/teacher";
 import css from "./TeacherCard.module.css";
 import Button from "../Button/Button";
+import BookingModal from "../BookingModal/BookingModal";
+import { useFavorites } from "../../hooks/useFavorites";
+import toast from "react-hot-toast";
 
 interface TeacherCardProps {
   teacher: Teacher;
@@ -9,6 +12,26 @@ interface TeacherCardProps {
 
 export default function TeacherCard({ teacher }: TeacherCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const { isLoggedIn, toggleFavorite, isFavorite } = useFavorites();
+
+  const teacherIsFavorite = isFavorite(teacher.id);
+
+  const handleFavoriteClick = () => {
+  if (!isLoggedIn) {
+    toast.error("This feature is available only for authorized users");
+    return;
+  }
+
+  toggleFavorite(teacher);
+
+  if (teacherIsFavorite) {
+    toast.success("Teacher removed from favorites");
+  } else {
+    toast.success("Teacher added to favorites");
+  }
+};
+
   return (
     <li className={css.card}>
       <div className={css.avatarWrapper}>
@@ -18,8 +41,8 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
           alt={`${teacher.name} ${teacher.surname}`}
         />
         <svg width="12" height="12" className={css.onlineDot}>
-                        <use href={`/public/symbol-defs.svg#icon-online`} />
-                      </svg>
+          <use href={`/public/symbol-defs.svg#icon-online`} />
+        </svg>
       </div>
 
       <div className={css.content}>
@@ -27,9 +50,12 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
           <p className={css.label}>Languages</p>
 
           <div className={css.stats}>
-            <span><svg width="16" height="16" className={css.reviewRating}>
+            <span>
+              <svg width="16" height="16" className={css.reviewRating}>
                 <use href={`/public/symbol-defs.svg#icon-book-open`} />
-              </svg>Lessons online</span>
+              </svg>
+              Lessons online
+            </span>
             <span>Lessons done: {teacher.lessons_done}</span>
             <span>
               {" "}
@@ -47,11 +73,20 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
           <button
             type="button"
             className={css.heartBtn}
-            aria-label="Add to favorites"
+            onClick={handleFavoriteClick}
+            aria-label={
+              teacherIsFavorite ? "Remove from favorites" : "Add to favorites"
+            }
           >
-         <svg width="26" height="26" className={css.reviewRating}>
-                        <use href={`/public/symbol-defs.svg#icon-heart`} />
-                      </svg>
+            <svg width="26" height="26" className={css.heartIcon}>
+              <use
+                href={
+                  teacherIsFavorite
+                    ? "/symbol-defs.svg#icon-heart-hover"
+                    : "/symbol-defs.svg#icon-heart"
+                }
+              />
+            </svg>
           </button>
         </div>
 
@@ -133,11 +168,21 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
         </ul>
 
         {isExpanded && (
-          <Button variant="primary" className={css.bookBtn}>
+          <Button
+            variant="primary"
+            className={css.bookBtn}
+            onClick={() => setIsBookingModalOpen(true)}
+          >
             Book trial lesson
           </Button>
         )}
       </div>
+      {isBookingModalOpen && (
+        <BookingModal
+          teacher={teacher}
+          onClose={() => setIsBookingModalOpen(false)}
+        />
+      )}
     </li>
   );
 }

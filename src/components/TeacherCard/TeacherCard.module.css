@@ -112,7 +112,8 @@
   font-size: 26px;
   line-height: 1;
 
-  color: #121417;
+  fill: #ffff;
+  stroke: #121417;
   cursor: pointer;
 }
 
@@ -235,7 +236,8 @@
   font-weight: 500;
   line-height: 1.29;
 
-  color: #121417;
+  stroke: #121417;
+  fill:#ffffff;
 }
 
 .reviewComment {
@@ -289,4 +291,26 @@
   font-weight: 500;
   line-height: 1.5;
   text-decoration: underline;
+}
+
+.heartBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 26px;
+  height: 26px;
+  padding: 0;
+
+  border: none;
+  background-color: transparent;
+
+  cursor: pointer;
+}
+
+.heartIcon {
+  display: block;
+
+  width: 26px;
+  height: 26px;
 }

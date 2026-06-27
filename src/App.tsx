@@ -6,6 +6,7 @@ import FavoritesPage from "./pages/FavoritesPage/FavoritesPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { useState } from "react";
 import AuthModal from "./components/AuthModal/AuthModal";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 type AuthMode = "login" | "register" | null;
 
@@ -16,7 +17,7 @@ export default function App() {
     setAuthMode(null);
   };
 
-    return (
+  return (
     <>
       <Header
         onLoginClick={() => setAuthMode("login")}
@@ -25,10 +26,17 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/teachers" element={<TeachersPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route
+          path="/favorites"
+          element={
+            <PrivateRoute>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-        {authMode && <AuthModal mode={authMode} onClose={closeAuthModal} />}
+      </Routes>
+      {authMode && <AuthModal mode={authMode} onClose={closeAuthModal} />}
     </>
   );
 }

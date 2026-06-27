@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
 import type { Teacher } from "../types/teacher";
 
@@ -8,7 +8,7 @@ export function useFavorites() {
 
   const storageKey = user ? `favorites-${user.uid}` : null;
 
-  useEffect(() => {
+  const refreshFavorites = useCallback(() => {
     if (!storageKey) {
       setFavorites([]);
       return;
@@ -16,35 +16,41 @@ export function useFavorites() {
 
     const savedFavorites = localStorage.getItem(storageKey);
 
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    } else {
+    if (!savedFavorites) {
       setFavorites([]);
+      return;
+    }
+
+    try {
+      const parsedFavorites = JSON.parse(savedFavorites) as Teacher[];
+      setFavorites(parsedFavorites);
+    } catch {
+      setFavorites([]);
+      localStorage.removeItem(storageKey);
     }
   }, [storageKey]);
+
+  useEffect(() => {
+    refreshFavorites();
+  }, [refreshFavorites]);
 
   const toggleFavorite = (teacher: Teacher) => {
     if (!storageKey) return;
 
-    setFavorites((prevFavorites) => {
-      const isAlreadyFavorite = prevFavorites.some(
-        (favoriteTeacher) => favoriteTeacher.id === teacher.id
-      );
+    const isAlreadyFavorite = favorites.some(
+      favoriteTeacher => favoriteTeacher.id === teacher.id
+    );
 
-      const updatedFavorites = isAlreadyFavorite
-        ? prevFavorites.filter(
-            (favoriteTeacher) => favoriteTeacher.id !== teacher.id
-          )
-        : [...prevFavorites, teacher];
+    const updatedFavorites = isAlreadyFavorite
+      ? favorites.filter(favoriteTeacher => favoriteTeacher.id !== teacher.id)
+      : [...favorites, teacher];
 
-      localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
-
-      return updatedFavorites;
-    });
+    setFavorites(updatedFavorites);
+    localStorage.setItem(storageKey, JSON.stringify(updatedFavorites));
   };
 
   const isFavorite = (teacherId: string) => {
-    return favorites.some((teacher) => teacher.id === teacherId);
+    return favorites.some(teacher => teacher.id === teacherId);
   };
 
   return {
@@ -52,5 +58,6 @@ export function useFavorites() {
     isLoggedIn,
     toggleFavorite,
     isFavorite,
+    refreshFavorites,
   };
 }

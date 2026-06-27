@@ -34,6 +34,11 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
         <NavLink to="/teachers" className={css.navLink}>
           Teachers
         </NavLink>
+        {isLoggedIn && (
+          <NavLink to="/favorites" className={css.navLink}>
+            Favorites
+          </NavLink>
+        )}
       </nav>
 
       <div className={css.auth}>

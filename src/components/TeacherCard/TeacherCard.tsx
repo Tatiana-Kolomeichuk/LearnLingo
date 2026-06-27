@@ -8,9 +8,10 @@ import toast from "react-hot-toast";
 
 interface TeacherCardProps {
   teacher: Teacher;
+  onFavoriteChange?: () => void;
 }
 
-export default function TeacherCard({ teacher }: TeacherCardProps) {
+export default function TeacherCard({ teacher, onFavoriteChange }: TeacherCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const { isLoggedIn, toggleFavorite, isFavorite } = useFavorites();
@@ -23,7 +24,8 @@ export default function TeacherCard({ teacher }: TeacherCardProps) {
     return;
   }
 
-  toggleFavorite(teacher);
+    toggleFavorite(teacher);
+     onFavoriteChange?.();
 
   if (teacherIsFavorite) {
     toast.success("Teacher removed from favorites");

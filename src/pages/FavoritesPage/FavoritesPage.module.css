@@ -1,0 +1,39 @@
+.page {
+  min-height: calc(100vh - 88px);
+  padding: 32px 64px;
+  background-color: #f8f8f8;
+}
+
+.list {
+  max-width: 1184px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.emptyState {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  border-radius: 24px;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #121417;
+}
+
+.text {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #8a8a89;
+}

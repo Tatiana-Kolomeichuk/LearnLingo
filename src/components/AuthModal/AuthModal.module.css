@@ -16,9 +16,31 @@
 
   font-size: 32px;
   line-height: 1;
-  color: #121417;
+   stroke: #121417;
+  fill: none;
+   transition: stroke 250ms ease, transform 250ms ease;
 
   cursor: pointer;
+}
+
+.closeBtn:hover .closeIcon,
+.closeBtn:focus .closeIcon {
+  stroke: #f4c550;
+  transform: scale(1.08);
+}
+
+.eyeIcon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: #121417;
+  transition: stroke 250ms ease, transform 250ms ease;
+}
+
+.eyeBtn:hover .eyeIcon,
+.eyeBtn:focus .eyeIcon {
+  stroke: #f4c550;
+  transform: scale(1.08);
 }
 
 .title {

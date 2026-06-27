@@ -16,17 +16,20 @@
 
   font-size: 32px;
   line-height: 1;
-  color: #121417;
+  stroke: #121417;
+  fill: none;
 
   cursor: pointer;
 
-  transition: color 250ms ease;
+  transition: stroke 250ms ease, transform 250ms ease;
 }
 
-.closeBtn:hover,
-.closeBtn:focus {
-  color: #f4c550;
+.closeBtn:hover .closeIcon,
+.closeBtn:focus .closeIcon {
+  stroke: #f4c550;
+  transform: scale(1.08);
 }
+
 
 .title {
   margin: 0 0 20px;

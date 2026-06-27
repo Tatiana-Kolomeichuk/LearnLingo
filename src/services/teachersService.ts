@@ -45,3 +45,20 @@ export async function getTeachers(
     lastKey: teachers.at(-1)?.id ?? null,
   };
 }
+
+
+export const getAllTeachers = async () => {
+  const teachersRef = ref(database, "/");
+  const snapshot = await get(teachersRef);
+
+  if (!snapshot.exists()) {
+    return [];
+  }
+
+  const data = snapshot.val();
+
+  return Object.entries(data).map(([id, teacher]) => ({
+    id,
+    ...(teacher as Omit<Teacher, "id">),
+  }));
+};

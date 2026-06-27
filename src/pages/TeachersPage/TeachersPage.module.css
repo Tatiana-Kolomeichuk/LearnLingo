@@ -22,3 +22,14 @@
   display: flex;
   margin: 0 auto;
 }
+.emptyText {
+  max-width: 1184px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 24px;
+  background-color: #ffffff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #121417;
+}

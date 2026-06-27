@@ -1,63 +1,92 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/Button/Button";
 import TeacherCard from "../../components/TeacherCard/TeacherCard";
-import { getTeachers } from "../../services/teachersService";
+import TeachersFilters from "../../components/TeachersFilters/TeachersFilters";
+import { getAllTeachers } from "../../services/teachersService";
 import type { Teacher } from "../../types/teacher";
 import css from "./TeachersPage.module.css";
+import toast from "react-hot-toast";
+
+const TEACHERS_PER_PAGE = 4;
 
 export default function TeachersPage() {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [lastKey, setLastKey] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(TEACHERS_PER_PAGE);
   const [isFirstLoading, setIsFirstLoading] = useState(true);
 
- useEffect(() => {
-  let isCancelled = false;
+  const [language, setLanguage] = useState("");
+  const [level, setLevel] = useState("");
+  const [price, setPrice] = useState("");
 
-  async function fetchInitialTeachers() {
-    try {
-  
+  useEffect(() => {
+    let isCancelled = false;
 
-      const result = await getTeachers(4, null);
-
-
-      if (isCancelled) return;
-
-      setTeachers(result.teachers);
-      setLastKey(result.lastKey);
-    } catch (error) {
-      console.log("Teachers error:", error);
-    } finally {
-      if (!isCancelled) {
-        setIsFirstLoading(false);
+    async function fetchTeachers() {
+      try {
+        const result = await getAllTeachers();
+        if (isCancelled) return;
+        setTeachers(result);
+      } catch {
+        toast.error("Failed to load teachers. Please try again later.");
+      } finally {
+        if (!isCancelled) {
+          setIsFirstLoading(false);
+        }
       }
     }
-  }
 
-  fetchInitialTeachers();
+    fetchTeachers();
 
-  return () => {
-    isCancelled = true;
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
+  const filteredTeachers = useMemo(() => {
+    return teachers.filter((teacher) => {
+      const matchesLanguage = language
+        ? teacher.languages.includes(language)
+        : true;
+
+      const matchesLevel = level ? teacher.levels.includes(level) : true;
+
+      const matchesPrice = price
+        ? Number(teacher.price_per_hour) === Number(price)
+        : true;
+
+      return matchesLanguage && matchesLevel && matchesPrice;
+    });
+  }, [teachers, language, level, price]);
+
+  const visibleTeachers = useMemo(() => {
+    return filteredTeachers.slice(0, visibleCount);
+  }, [filteredTeachers, visibleCount]);
+
+  const hasMoreTeachers = visibleCount < filteredTeachers.length;
+
+  const loadMoreTeachers = () => {
+    setVisibleCount((prevVisibleCount) => prevVisibleCount + TEACHERS_PER_PAGE);
   };
-}, []);
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    setVisibleCount(TEACHERS_PER_PAGE);
+  };
 
-  const loadMoreTeachers = async () => {
-    try {
-      setIsLoading(true);
+  const handleLevelChange = (value: string) => {
+    setLevel(value);
+    setVisibleCount(TEACHERS_PER_PAGE);
+  };
 
-      const result = await getTeachers(4, lastKey);
+  const handlePriceChange = (value: string) => {
+    setPrice(value);
+    setVisibleCount(TEACHERS_PER_PAGE);
+  };
 
-      setTeachers((prevTeachers) => [
-        ...prevTeachers,
-        ...result.teachers,
-      ]);
-
-      setLastKey(result.lastKey);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+  const clearFilters = () => {
+    setLanguage("");
+    setLevel("");
+    setPrice("");
+    setVisibleCount(TEACHERS_PER_PAGE);
   };
 
   return (
@@ -66,20 +95,33 @@ export default function TeachersPage() {
         <p>Loading teachers...</p>
       ) : (
         <>
-          <ul className={css.list}>
-            {teachers.map((teacher) => (
-              <TeacherCard key={teacher.id} teacher={teacher} />
-            ))}
-          </ul>
+          <TeachersFilters
+            language={language}
+            level={level}
+            price={price}
+            onLanguageChange={handleLanguageChange}
+            onLevelChange={handleLevelChange}
+            onPriceChange={handlePriceChange}
+            onClearFilters={clearFilters}
+          />
 
-          {lastKey && (
+          {visibleTeachers.length === 0 ? (
+            <p className={css.emptyText}>No teachers found.</p>
+          ) : (
+            <ul className={css.list}>
+              {visibleTeachers.map((teacher) => (
+                <TeacherCard key={teacher.id} teacher={teacher} />
+              ))}
+            </ul>
+          )}
+
+          {hasMoreTeachers && (
             <Button
               variant="primary"
               onClick={loadMoreTeachers}
-              disabled={isLoading}
               className={css.loadMoreBtn}
             >
-              {isLoading ? "Loading..." : "Load more"}
+              Load more
             </Button>
           )}
         </>

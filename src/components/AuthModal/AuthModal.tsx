@@ -69,7 +69,9 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
         onClick={onClose}
         aria-label="Close modal"
       >
-        ×
+        <svg width="32" height="32" className={css.closeIcon}>
+          <use href={`/public/symbol-defs.svg#icon-x`} />
+        </svg>
       </button>
 
       <h2 className={css.title}>{isLogin ? "Log In" : "Registration"}</h2>
@@ -121,7 +123,9 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
             onClick={() => setIsPasswordVisible((prev) => !prev)}
             aria-label="Toggle password visibility"
           >
-            {isPasswordVisible ? "🙈" : "👁"}
+            {isPasswordVisible ? "🙈" : <svg width="20" height="20" className={css.eyeIcon}>
+          <use href={`/public/symbol-defs.svg#icon-eye-off`} />
+        </svg>}
           </button>
 
           {errors.password && (

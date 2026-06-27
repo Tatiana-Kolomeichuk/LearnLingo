@@ -46,7 +46,9 @@ export default function BookingModal({ teacher, onClose }: BookingModalProps) {
         onClick={onClose}
         aria-label="Close modal"
       >
-        ×
+      <svg width="32" height="32" className={css.closeIcon}>
+          <use href={`/public/symbol-defs.svg#icon-x`} />
+        </svg>
       </button>
 
       <h2 className={css.title}>Book trial lesson</h2>

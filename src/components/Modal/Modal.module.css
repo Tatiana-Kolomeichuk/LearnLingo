@@ -8,8 +8,11 @@
   justify-content: center;
 
   padding: 20px;
+  overflow-y: auto;
 
   background-color: rgba(18, 20, 23, 0.4);
+
+  animation: backdropFadeIn 250ms ease forwards;
 }
 
 .modal {
@@ -17,8 +20,104 @@
 
   width: 100%;
   max-width: 566px;
+  max-height: calc(100vh - 40px);
   padding: 64px;
+  overflow-y: auto;
 
   border-radius: 30px;
   background-color: #ffffff;
+  box-shadow: 0 20px 80px rgba(18, 20, 23, 0.16);
+
+  animation: modalAppear 250ms ease forwards;
+}
+
+.backdropClosing {
+  animation: backdropFadeOut 250ms ease forwards;
+}
+
+.modalClosing {
+  animation: modalDisappear 250ms ease forwards;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+  padding: 0;
+
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.closeIcon {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: #121417;
+  transition: stroke 250ms ease, transform 250ms ease;
+}
+
+.closeBtn:hover .closeIcon,
+.closeBtn:focus .closeIcon {
+  stroke: #f4c550;
+  transform: scale(1.08);
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalDisappear {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+@media (max-width: 767px) {
+  .modal {
+    padding: 40px 24px;
+    border-radius: 24px;
+  }
 }

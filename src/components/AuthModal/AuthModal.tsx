@@ -11,6 +11,7 @@ import {
 } from "../../schemas/authSchemas";
 import css from "./AuthModal.module.css";
 import { loginUser, registerUser } from "../../services/authService";
+import toast from "react-hot-toast";
 
 type AuthMode = "login" | "register";
 
@@ -43,8 +44,11 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
           email: data.email,
           password: data.password,
         });
+
+        toast.success("You have successfully logged in");
       } else {
         if (!("name" in data) || !data.name) {
+          toast.error("Please enter your name");
           return;
         }
 
@@ -53,26 +57,22 @@ export default function AuthModal({ mode, onClose }: AuthModalProps) {
           email: data.email,
           password: data.password,
         });
+
+        toast.success("Registration successful");
       }
 
       onClose();
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error(
+        isLogin
+          ? "Invalid email or password"
+          : "Registration failed. Please try again."
+      );
     }
   };
 
   return (
     <Modal onClose={onClose}>
-      <button
-        type="button"
-        className={css.closeBtn}
-        onClick={onClose}
-        aria-label="Close modal"
-      >
-        <svg width="32" height="32" className={css.closeIcon}>
-          <use href={`/public/symbol-defs.svg#icon-x`} />
-        </svg>
-      </button>
 
       <h2 className={css.title}>{isLogin ? "Log In" : "Registration"}</h2>
 

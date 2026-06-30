@@ -2,7 +2,6 @@
   max-width: 1312px;
   margin: 0 auto;
   padding: 20px 64px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,9 +11,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-
-  text-decoration: none;
-  color: #121417;
 }
 
 .logoIcon {
@@ -67,6 +63,10 @@
 
 .loginBtn {
   gap: 8px;
+}
+.loginBtn span,
+.loginBtn {
+  font-size: 16px;
 }
 
 .loginIcon {

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import Loader from "../Loader/Loader";
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -11,7 +12,7 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   const location = useLocation();
 
   if (isAuthLoading) {
-    return null;
+    return <Loader />;
   }
 
   if (!isLoggedIn) {

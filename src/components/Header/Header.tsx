@@ -3,6 +3,7 @@ import css from "./Header.module.css";
 import Button from "../Button/Button";
 import { useAuth } from "../../hooks/useAuth";
 import { logoutUser } from "../../services/authService";
+import toast from "react-hot-toast";
 
 interface HeaderProps {
   onLoginClick: () => void;
@@ -15,8 +16,8 @@ export default function Header({ onLoginClick, onRegisterClick }: HeaderProps) {
   const handleLogout = async () => {
     try {
       await logoutUser();
-    } catch (error) {
-      console.log(error);
+    } catch  {
+      toast.error("Failed to log out. Please try again.");
     }
   };
   return (

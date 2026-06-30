@@ -6,6 +6,7 @@ import { getAllTeachers } from "../../services/teachersService";
 import type { Teacher } from "../../types/teacher";
 import css from "./TeachersPage.module.css";
 import toast from "react-hot-toast";
+import Loader from "../../components/Loader/Loader";
 
 const TEACHERS_PER_PAGE = 4;
 
@@ -92,7 +93,7 @@ export default function TeachersPage() {
   return (
     <main className={css.page}>
       {isFirstLoading ? (
-        <p>Loading teachers...</p>
+        <Loader />
       ) : (
         <>
           <TeachersFilters
